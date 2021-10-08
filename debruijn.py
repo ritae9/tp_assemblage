@@ -104,12 +104,18 @@ def std(data):
     pass
 
 
+def path_average_weight(graph, path):
+	list_weight=[]
+	for i in graph.subgraph(path).edges(data=True):
+		d=i[2]
+		list_weight.append(d['weight'])
+	wm =statistics.mean(list_weight)
+	return wm
+
 def select_best_path(graph, path_list, path_length, weight_avg_list, 
                      delete_entry_node=False, delete_sink_node=False):
     pass
 
-def path_average_weight(graph, path):
-    pass
 
 def solve_bubble(graph, ancestor_node, descendant_node):
     pass
@@ -152,11 +158,12 @@ def get_contigs(graph, starting_nodes, ending_nodes):
 						else :
 							tubu+=word[-1]
 					tub.append([tubu, len(tubu)])
-					print(tub)
 	return tub			
 			
 def save_contigs(contigs_list, output_file):
-    pass
+    with open (output_file, 'w') as fileout:
+    	for i in range(0,len(contigs_list)):
+    		fileout.write(">contig_"+str(i)+ " len=" + str(contigs_list[i][1]) +'\n'+ fill(contigs_list[i][0]) +'\n')
 
 
 def fill(text, width=80):
@@ -207,10 +214,14 @@ def main():
     dico= build_kmer_dict(sys.argv[2], args.kmer_size)
     #print(dico)
     graph=build_graph(dico)
-    print(graph)
+    #print(graph)
     start=get_starting_nodes(graph)
     end=get_sink_nodes(graph)
     path= get_contigs(graph,start, end)
+    save_contigs(path, 'resultat1.fasta')
+    pathsim=nx.all_simple_paths(graph,start,end)
+    d=path_average_weight(graph, pathsim)
+    print (d)
     # Fonctions de dessin du graphe
     # A decommenter si vous souhaitez visualiser un petit 
     # graphe
