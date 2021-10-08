@@ -124,10 +124,20 @@ def solve_out_tips(graph, ending_nodes):
     pass
 
 def get_starting_nodes(graph):
-    
-
+	list_start=[]
+	for i in graph.nodes:
+		nodepre=list(graph.predecessors(i))
+		if (nodepre ==[]):
+			list_start.append(i)
+	return list_start
+	
 def get_sink_nodes(graph):
-    pass
+	list_sortie=[]
+	for i in graph.nodes:
+		nodesuc=list(graph.successors(i))
+		if (nodesuc ==[]):
+			list_sortie.append(i)
+	return list_sortie
 
 def get_contigs(graph, starting_nodes, ending_nodes):
     pass
