@@ -92,8 +92,10 @@ def build_kmer_dict(fastq_file, kmer_size):
 	return kmer_dic	
 
 def build_graph(kmer_dict):
-    
-
+	G = nx.DiGraph()
+	for kmer in kmer_dict:
+    		G.add_edge(kmer[:-1],kmer[1:], weight=kmer_dict[kmer]) 
+	return G
 
 def remove_paths(graph, path_list, delete_entry_node, delete_sink_node):
     pass
@@ -122,7 +124,7 @@ def solve_out_tips(graph, ending_nodes):
     pass
 
 def get_starting_nodes(graph):
-    pass
+    
 
 def get_sink_nodes(graph):
     pass
@@ -180,7 +182,9 @@ def main():
     #cutk=cut_kmer(sequence,args.kmer_size)
     #print (cutk)
     dico= build_kmer_dict(sys.argv[2], args.kmer_size)
-    print(dico)
+    #print(dico)
+    graph=build_graph(dico)
+    print(graph)
     # Fonctions de dessin du graphe
     # A decommenter si vous souhaitez visualiser un petit 
     # graphe
