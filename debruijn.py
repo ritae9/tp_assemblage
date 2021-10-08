@@ -24,13 +24,12 @@ random.seed(9001)
 from random import randint
 import statistics
 
-__author__ = "Your Name"
-__copyright__ = "Universite Paris Diderot"
-__credits__ = ["Your Name"]
+__author__ = "EID rita"
+__copyright__ = "Universite Paris"
+__credits__ = ["EID rita"]
 __license__ = "GPL"
 __version__ = "1.0.0"
-__maintainer__ = "Your Name"
-__email__ = "your@email.fr"
+__maintainer__ = "EID rita"
 __status__ = "Developpement"
 
 def isfile(path):
@@ -68,19 +67,32 @@ def get_arguments():
 
 
 def read_fastq(fastq_file):
-    pass
-
-
+	nucle=['A', 'T', 'C','G']
+	with open (fastq_file, 'rt') as handle:
+		for i in handle:
+			for j in range(0,1):
+				if i[j] in nucle:
+					seqn= i.strip("\n")
+					yield seqn
+				
+				
 def cut_kmer(read, kmer_size):
-    pass
-
-
+	for start in range(0,len(read)-(kmer_size-1),1):
+		km= read[start:start+kmer_size]    
+		yield km
+	
 def build_kmer_dict(fastq_file, kmer_size):
-    pass
-
+	kmer_dic={}
+	for i in read_fastq(fastq_file) :
+		for kmer in cut_kmer(i, kmer_size):
+			if kmer in kmer_dic.keys():
+				kmer_dic[kmer]+=1
+			else :
+				kmer_dic[kmer]=1
+	return kmer_dic	
 
 def build_graph(kmer_dict):
-    pass
+    
 
 
 def remove_paths(graph, path_list, delete_entry_node, delete_sink_node):
@@ -162,7 +174,13 @@ def main():
     """
     # Get arguments
     args = get_arguments()
-
+    #print(args.kmer_size)
+    #sequence=read_fastq(sys.argv[2])
+    #print (sequence)
+    #cutk=cut_kmer(sequence,args.kmer_size)
+    #print (cutk)
+    dico= build_kmer_dict(sys.argv[2], args.kmer_size)
+    print(dico)
     # Fonctions de dessin du graphe
     # A decommenter si vous souhaitez visualiser un petit 
     # graphe
