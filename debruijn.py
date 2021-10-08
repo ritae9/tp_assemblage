@@ -140,8 +140,21 @@ def get_sink_nodes(graph):
 	return list_sortie
 
 def get_contigs(graph, starting_nodes, ending_nodes):
-    pass
-
+	tub=[]
+	for start in starting_nodes:
+		for end in ending_nodes:
+			if nx.has_path(graph,start,end)== True:
+				for path in nx.all_simple_paths(graph,start,end):
+					tubu=""
+					for i,word in enumerate(path):
+						if (i==0):
+							tubu=word
+						else :
+							tubu+=word[-1]
+					tub.append([tubu, len(tubu)])
+					print(tub)
+	return tub			
+			
 def save_contigs(contigs_list, output_file):
     pass
 
@@ -195,6 +208,9 @@ def main():
     #print(dico)
     graph=build_graph(dico)
     print(graph)
+    start=get_starting_nodes(graph)
+    end=get_sink_nodes(graph)
+    path= get_contigs(graph,start, end)
     # Fonctions de dessin du graphe
     # A decommenter si vous souhaitez visualiser un petit 
     # graphe
